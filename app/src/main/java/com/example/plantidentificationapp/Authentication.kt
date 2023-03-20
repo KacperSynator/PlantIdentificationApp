@@ -39,7 +39,7 @@ class Authentication : AppCompatActivity() {
         }
 
         // Set onClickListener for Sign-Out Button
-        signOutButton.setOnClickListener {
+        sign_out_button.setOnClickListener {
             signOut()
         }
     }
