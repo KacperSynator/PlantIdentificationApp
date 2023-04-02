@@ -1,26 +1,30 @@
 package com.example.plantidentificationapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import kotlinx.android.synthetic.main.login_screen.*
 
-class MainActivity : AppCompatActivity() {
-    private val logTag = "MainActivity"
+class LoginActivity : AppCompatActivity() {
+    private val logTag = "LoginActivity"
 
     private lateinit var authManager: AuthenticationManager
 
     private val signInLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+            val task = authManager.googleSignInTask(result.data)
             try {
                 val account = task.getResult(ApiException::class.java)!!
 
                 val responseCallback: (Boolean) -> Unit = { success ->
+                    if (success) {
+                        loadHomeActivity()
+                    }
+
                     toastResult(
                         success,
                         "Welcome, ${authManager.currentUser()?.displayName}",
@@ -35,6 +39,18 @@ class MainActivity : AppCompatActivity() {
                 Log.e(logTag, "Google Sign-In failed.")
             }
         }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        authManager = AuthenticationManager(this)
+
+        if (authManager.isCurrentUserSignedIn()) {
+            loadHomeActivity()
+        } else {
+            loadLoginScreen()
+        }
+    }
 
     data class GetEmailAndPasswordResult(
         val success: Boolean, val email: String, val password: String
@@ -60,12 +76,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private fun loadLoginScreen() {
         setContentView(R.layout.login_screen)
-
-        authManager = AuthenticationManager(this)
 
         logging_button.setOnClickListener {
             val result = getEmailAndPassword()
@@ -80,6 +92,10 @@ class MainActivity : AppCompatActivity() {
                     "Welcome, ${authManager.currentUser()?.displayName}",
                     "Authentication failed."
                 )
+
+                if (success) {
+                    loadHomeActivity()
+                }
             }
 
             authManager.logInWithEmailAndPassword(result.email, result.password, responseCallback)
@@ -107,15 +123,10 @@ class MainActivity : AppCompatActivity() {
             val signInIntent = authManager.createSignInIntent()
             signInLauncher.launch(signInIntent)
         }
+    }
 
-        sign_out_button.setOnClickListener {
-            val responseCallback: (Boolean) -> Unit = { success ->
-                toastResult(
-                    success, "Signed out successfully.", "Signed out failed."
-                )
-            }
-
-            authManager.signOut(responseCallback)
-        }
+    private fun loadHomeActivity() {
+        val intent = Intent(this, HomeActivity::class.java)
+        startActivity(intent)
     }
 }

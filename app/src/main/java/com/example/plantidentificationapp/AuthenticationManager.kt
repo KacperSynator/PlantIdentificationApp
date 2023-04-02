@@ -3,9 +3,11 @@ package com.example.plantidentificationapp
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import android.widget.Toast
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
@@ -35,8 +37,16 @@ class AuthenticationManager(private val context: Context) {
         return googleSignInClient.signInIntent
     }
 
+    fun isCurrentUserSignedIn(): Boolean {
+        return auth.currentUser != null
+    }
+
     fun currentUser(): FirebaseUser? {
         return auth.currentUser
+    }
+
+    fun googleSignInTask(intent: Intent?): Task<GoogleSignInAccount> {
+        return GoogleSignIn.getSignedInAccountFromIntent(intent)
     }
 
     fun createAccountWithEmailAndPassword(
@@ -48,6 +58,7 @@ class AuthenticationManager(private val context: Context) {
             .addOnCompleteListener { task ->
                 if (!task.isSuccessful) {
                     Log.e(logTag, "Email and password user creation failed: ${task.exception}")
+                    Toast.makeText(context, "Please enter email and password", Toast.LENGTH_SHORT).show()
                 }
 
                 callback(task.isSuccessful)
