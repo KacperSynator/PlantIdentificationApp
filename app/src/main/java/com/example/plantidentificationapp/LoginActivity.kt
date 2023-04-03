@@ -36,7 +36,7 @@ class LoginActivity : AppCompatActivity() {
 
             } catch (e: ApiException) {
                 Toast.makeText(this, "Google Sign-In failed.", Toast.LENGTH_SHORT).show()
-                Log.e(logTag, "Google Sign-In failed.")
+                Log.e(logTag, "Google Sign-In failed. ${e}")
             }
         }
 
