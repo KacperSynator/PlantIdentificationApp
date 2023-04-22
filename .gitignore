@@ -334,3 +334,6 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.gitignore.io/api/java,linux,macos,windows,android,intellij,androidstudio
+
+# Don't track api_keys
+api_keys.xml

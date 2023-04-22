@@ -14,7 +14,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var authManager: AuthenticationManager
     // Main menu contents
     val menuImageId = intArrayOf(R.drawable.plants, R.drawable.watering, R.drawable.fertilizing)
-    val menuItemName = listOf("My plants", "Watering", "Fertilizing")
+    val menuItemName = listOf("My plants", "Map", "Fertilizing")
     private lateinit var menuItemArrayList : ArrayList<MenuItem>
 
     // Binding
@@ -22,12 +22,19 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Setting up binding
+
         setContentView(R.layout.home_screen)
         binding = HomeScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Setting up main menu contents
+        setupMainMenuContents()
+
+        authManager = AuthenticationManager(this)
+
+        setupSignOutButton()
+    }
+
+    private fun setupMainMenuContents() {
         menuItemArrayList = ArrayList()
         for(i in menuItemName.indices) {
             val singleMenuItem = MenuItem(menuItemName[i], menuImageId[i])
@@ -35,9 +42,16 @@ class HomeActivity : AppCompatActivity() {
         }
         binding.listViewMain.isClickable = true
         binding.listViewMain.adapter = MenuAdapter(this, menuItemArrayList)
+        binding.listViewMain.setOnItemClickListener{_, _, position, _ ->
+            when(position) {
+                0 -> loadMapActivity()
+                1 -> loadMapActivity()
+                2 -> loadMapActivity()
+            }
+        }
+    }
 
-        authManager = AuthenticationManager(this)
-
+    private fun setupSignOutButton() {
         home_screen_sign_out_button.setOnClickListener {
             val responseCallback: (Boolean) -> Unit = { success ->
                 toastResult(
@@ -55,6 +69,11 @@ class HomeActivity : AppCompatActivity() {
 
     private fun loadLoginActivity() {
         val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun loadMapActivity() {
+        val intent = Intent(this, MapActivity::class.java)
         startActivity(intent)
     }
 
