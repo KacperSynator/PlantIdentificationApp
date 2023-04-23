@@ -1,7 +1,12 @@
 package com.example.plantidentificationapp
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
@@ -10,26 +15,33 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 
 import kotlinx.android.synthetic.main.map_screen.*
+import kotlin.math.log
 
-class MapActivity : AppCompatActivity(), OnMapReadyCallback {
+class MapActivity : AppCompatActivity() {
+    private val logTag = "MapActivity"
+
     private lateinit var mapView: MapView
-    private lateinit var googleMap: GoogleMap
+
+    private var mapManager: GoogleMapManager = GoogleMapManager(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.map_screen)
 
+        requestInternetPermission()
+
         mapView = findViewById(R.id.google_map)
         mapView.onCreate(savedInstanceState)
-        mapView.getMapAsync(this)
+        mapView.getMapAsync(mapManager)
     }
 
-    override fun onMapReady(map: GoogleMap) {
-        map.let {
-            googleMap = it
-            val sydney = LatLng(-34.0, 151.0)
-            googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+    private fun requestInternetPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
+            != PackageManager.PERMISSION_GRANTED) {
+            Log.i(logTag, "Asking for Internet permission")
+            ActivityCompat.requestPermissions(this,
+                arrayOf(Manifest.permission.INTERNET),
+                MY_PERMISSIONS_INTERNET)
         }
     }
 
@@ -51,5 +63,9 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onLowMemory() {
         super.onLowMemory()
         mapView.onLowMemory()
+    }
+
+    companion object {
+        const val MY_PERMISSIONS_INTERNET = 1
     }
 }
