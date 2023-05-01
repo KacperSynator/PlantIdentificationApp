@@ -63,6 +63,17 @@ dependencies {
 
     // Google Sign In SDK (only required for Google Sign In)
     implementation 'com.google.android.gms:play-services-auth:20.4.1'
+
+    // RetroFit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1"
+    def okhttp_logging_interceptor_version = '3.8.1'
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_logging_interceptor_version"
+
+    // Image from url (Picasso)
+    implementation 'com.squareup.picasso:picasso:2.5.2'
 }
 
 apply plugin: 'com.google.gms.google-services'

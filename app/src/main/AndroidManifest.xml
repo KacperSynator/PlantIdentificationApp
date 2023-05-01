@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -17,6 +18,16 @@
         android:theme="@style/Theme.PlantIdentificationApp"
         tools:targetApi="31">
 
+        <provider
+            android:authorities="com.example.fileprovider"
+            android:name="androidx.core.content.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/image_provider"/>
+        </provider>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_api_key" />
@@ -30,5 +41,8 @@
         </activity>
         <activity android:name=".HomeActivity" android:exported="true"/>
         <activity android:name=".MapActivity" android:exported="true"/>
+        <activity android:name=".activities.ChoosePlantActivity"></activity>
+        <activity android:name=".activities.ChoosePlantDetailsActivity"></activity>
+        <activity android:name=".activities.ActivityNoResults"></activity>
     </application>
 </manifest>

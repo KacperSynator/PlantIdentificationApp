@@ -1,3 +1,29 @@
 <resources>
     <string name="app_name">PlantIdentificationApp</string>
+    <string name="no_data">No data found</string>
+    <string name="common_name">Common name:\u0020</string>
+    <string name="scientific_name">Scientific name:\u0020</string>
+    <string name="unknown_probability">-%\u0020</string>
+    <string name="probability">\u0020 Similarity</string>
+    <string name="add_plant">Add plant</string>
+    <string name="description">Description</string>
+    <string name="synonyms">Synonyms</string>
+    <string name="propagation_methods">Propagation methods</string>
+    <string name="edible_parts">Edible parts</string>
+    <string name="structured_name">Structured name</string>
+    <string name="genus">Genus:\u0020</string>
+    <string name="species">Species:\u0020</string>
+    <string name="taxonomy">Taxonomy</string>
+    <string name="cla">Class:\u0020</string>
+    <string name="family">Family:\u0020</string>
+    <string name="kingdom">Kingdom:\u0020</string>
+    <string name="order">Order:\u0020</string>
+    <string name="phylum">Phylum:\u0020</string>
+    <string name="watering">Watering</string>
+    <string name="fertilizing">Fertilizing</string>
+    <string name="added_date">Added date:\u0020</string>
+    <string name="water">Water</string>
+    <string name="fertilize">Fertilize</string>
+    <string name="save">Save reminders</string>
+    <string name="delete">Delete plant</string>
 </resources>
