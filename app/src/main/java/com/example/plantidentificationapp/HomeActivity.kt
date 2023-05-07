@@ -129,7 +129,9 @@ class HomeActivity : AppCompatActivity() {
                         identifiedPlantArrayList.add(identifiedPlant)
                     }
                 }
-                startActivity(Intent(applicationContext, ChoosePlantActivity::class.java))
+                val intent = Intent(applicationContext, ChoosePlantActivity::class.java)
+                intent.putExtra("image_path", photoFile.absolutePath)
+                startActivity(intent)
             }
         }
         // Every other activity

@@ -1,8 +1,7 @@
 package com.example.plantidentificationapp.activities
 
-import android.content.Intent
-import android.database.sqlite.SQLiteException
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -10,6 +9,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import com.example.plantidentificationapp.AuthenticationManager
+import com.example.plantidentificationapp.DatabaseManager
+import com.example.plantidentificationapp.GeoLocalizationManager
 import com.example.plantidentificationapp.R
 import com.example.plantidentificationapp.api.model.PlantDetails
 import com.example.plantidentificationapp.databinding.ActivityChooseplantdetailsBinding
@@ -17,9 +19,16 @@ import com.example.plantidentificationapp.databinding.ActivityChooseplantdetails
 //import com.example.plantidentificationapp.databinding.ActivityChooseplantdetailsBinding
 import com.example.plantidentificationapp.utils.nullableListStringIntoString
 import com.squareup.picasso.Picasso
+import java.io.File
 
 class ChoosePlantDetailsActivity : AppCompatActivity() {
+    private val logTag = "ChoosePlantDetailsActivity"
+
     private lateinit var binding: ActivityChooseplantdetailsBinding
+
+    private val databaseManager: DatabaseManager = DatabaseManager()
+    private val geoManager: GeoLocalizationManager = GeoLocalizationManager(this)
+    private val authManager: AuthenticationManager = AuthenticationManager(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -135,19 +144,19 @@ class ChoosePlantDetailsActivity : AppCompatActivity() {
             }
             // Adding plant to database
             button.setOnClickListener {
-                try {
-//                    saveInfoToast2.show()
-//                    dbHelper.addPlantToDB(db, chosenPlant!!)
-//                    saveInfoToast.show()
-//                    chosenPlant = null
-//                    identifiedPlantArrayList.clear()
-//                    var intent = Intent(applicationContext, MyPlantsActivity::class.java)
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-//                    startActivity(intent)
-//                    finish()
-                } catch (e : SQLiteException) {
-                    errorToastInfo.show()
-                    throw e
+                geoManager.getLocation { location ->
+                    if (location == null) {
+                        Log.e(logTag, "Location is null user: ${authManager.currentUser()!!.uid}")
+                        return@getLocation
+                    }
+
+                    databaseManager.addPlant(
+                        authManager.currentUser()!!,
+                        location,
+                        commonName.toString(),
+                        description.toString(),
+                        File(intent.getStringExtra("image_path")!!)
+                    )
                 }
             }
         }

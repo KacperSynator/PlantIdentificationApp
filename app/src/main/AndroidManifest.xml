@@ -41,8 +41,8 @@
         </activity>
         <activity android:name=".HomeActivity" android:exported="true"/>
         <activity android:name=".MapActivity" android:exported="true"/>
-        <activity android:name=".activities.ChoosePlantActivity"></activity>
-        <activity android:name=".activities.ChoosePlantDetailsActivity"></activity>
-        <activity android:name=".activities.ActivityNoResults"></activity>
+        <activity android:name=".activities.ChoosePlantActivity"/>
+        <activity android:name=".activities.ChoosePlantDetailsActivity"/>
+        <activity android:name=".activities.ActivityNoResults"/>
     </application>
 </manifest>

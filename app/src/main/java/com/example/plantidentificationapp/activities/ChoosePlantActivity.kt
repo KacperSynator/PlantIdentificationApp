@@ -5,18 +5,18 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.plantidentificationapp.R
-import com.example.plantidentificationapp.activities.ChoosePlantDetailsActivity
 import com.example.plantidentificationapp.adapters.ChoosePlantAdapter
 import com.example.plantidentificationapp.classes.IdentifiedPlant
 import com.example.plantidentificationapp.databinding.ActivityChooseplantBinding
 import com.example.plantidentificationapp.identifiedPlantArrayList
+import com.example.plantidentificationapp.photoFile
 import com.example.plantidentificationapp.responseIdentify
 
 // UWAGA ZMIENNA GLOBALNA
-var chosenPlant : IdentifiedPlant? = null
+var chosenPlant: IdentifiedPlant? = null
 
 class ChoosePlantActivity : AppCompatActivity() {
-    private lateinit var binding : ActivityChooseplantBinding
+    private lateinit var binding: ActivityChooseplantBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityChooseplantBinding.inflate(layoutInflater)
@@ -29,23 +29,21 @@ class ChoosePlantActivity : AppCompatActivity() {
             binding.listViewChooseplant.adapter = ChoosePlantAdapter(this, identifiedPlantArrayList)
             binding.listViewChooseplant.setOnItemClickListener { _, _, position, _ ->
                 chosenPlant = identifiedPlantArrayList.get(index = position)
-                startActivity(
-                    Intent(
-                        this@ChoosePlantActivity,
-                        ChoosePlantDetailsActivity::class.java
-                    )
-                )
+
+                val imageFile = intent.getStringExtra("image_path")
+                val intent = Intent(this@ChoosePlantActivity, ChoosePlantDetailsActivity::class.java)
+                intent.putExtra("image_path", imageFile)
+                startActivity(intent)
             }
-        }
-        else {
+        } else {
             noResultsActivityStart()
         }
     }
 
-    fun noResultsActivityStart () {
+    fun noResultsActivityStart() {
         setContentView(R.layout.activity_noresults)
         val noPlantsText = "No plants identified"
-        val noResultsTextView : TextView = findViewById(R.id.noresults_textview)
+        val noResultsTextView: TextView = findViewById(R.id.noresults_textview)
         noResultsTextView.text = noPlantsText
     }
 

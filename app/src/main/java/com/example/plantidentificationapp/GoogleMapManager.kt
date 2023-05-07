@@ -9,7 +9,6 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import java.net.URL
 
 class GoogleMapManager(private val context: Context) : OnMapReadyCallback {
     private val logTag = "GoogleMapManager"
@@ -17,6 +16,7 @@ class GoogleMapManager(private val context: Context) : OnMapReadyCallback {
     private lateinit var googleMap: GoogleMap
 
     private var geoManager: GeoLocalizationManager = GeoLocalizationManager(context)
+    private var databaseManager: DatabaseManager = DatabaseManager()
 
 
     override fun onMapReady(map: GoogleMap) {
@@ -30,29 +30,30 @@ class GoogleMapManager(private val context: Context) : OnMapReadyCallback {
                     return@getLocation
                 }
 
-                addMarker(
-                    MapMarkerData(
-                        location,
-                        "Your location",
-                        "desc",
-                        URL("https://hips.hearstapps.com/hmg-prod/images/high-angle-view-of-variety-of-succulent-plants-royalty-free-image-1584462052.jpg")
-                    )
-                )   // TODO(remove after testing)
-
                 val currentLocation = LatLng(location.latitude, location.longitude)
                 googleMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation))
+
+                loadAllMapMarkers()
             }
         }
     }
 
-    fun addMarker(markerData: MapMarkerData) {
-        val location = LatLng(markerData.location.latitude, markerData.location.longitude)
+    private fun addMarker(markerData: MapMarkerData) {
+        val latLng = LatLng(markerData.location.latitude, markerData.location.longitude)
 
-        val marker = googleMap.addMarker(
-            MarkerOptions().position(location).title(markerData.title)
+        val google = googleMap.addMarker(
+            MarkerOptions().position(latLng).title(markerData.title)
                 .snippet(markerData.description)
         )
 
-        marker?.tag = markerData.imageURL.toString()
+        google?.tag = markerData.imageURL.toString()
+    }
+
+    private fun loadAllMapMarkers() {
+        databaseManager.getAllPlants { markers ->
+            for (marker in markers) {
+                addMarker(marker)
+            }
+        }
     }
 }
