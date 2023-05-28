@@ -17,6 +17,13 @@ import java.net.URL
 class DatabaseManager {
     private val logTag = "DatabaseManager"
 
+    init {
+        if (!isPersistenceEnabled) {
+            FirebaseDatabase.getInstance().setPersistenceEnabled(true)
+            isPersistenceEnabled = true
+        }
+    }
+
     private val database = FirebaseDatabase.getInstance().reference
     private val storage = FirebaseStorage.getInstance()
 
@@ -24,10 +31,8 @@ class DatabaseManager {
         const val IDENTIFIED_PLANTS = "identified_plants"
         const val USERS = "users"
         const val PLANT_IMAGES = "plant_images"
-    }
 
-    init {
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
+        private var isPersistenceEnabled = false
     }
 
     fun addPlant(
@@ -103,7 +108,7 @@ class DatabaseManager {
     }
 
     private fun uploadPlantImage(imageFile: File, imageId: String, callback: (URL?) -> Unit) {
-        val storageRef = FirebaseStorage.getInstance().getReference(PLANT_IMAGES)
+        val storageRef = storage.getReference(PLANT_IMAGES)
         val imageRef = storageRef.child("$imageId.jpg")
 
         val uploadTask = imageRef.putFile(Uri.fromFile(imageFile))

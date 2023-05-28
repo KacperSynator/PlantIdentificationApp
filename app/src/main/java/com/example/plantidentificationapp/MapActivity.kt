@@ -45,10 +45,6 @@ class MapActivity : AppCompatActivity() {
         }
     }
 
-    fun onMapReady() {
-
-    }
-
     override fun onResume() {
         super.onResume()
         mapView.onResume()
