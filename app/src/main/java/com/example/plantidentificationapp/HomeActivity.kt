@@ -42,6 +42,8 @@ var identifiedPlantArrayList : ArrayList<IdentifiedPlant> = ArrayList()
 var  responseIdentify : ArrayList<ResponseIdentify> = ArrayList()
 
 class HomeActivity : AppCompatActivity() {
+    private val logTag = "HomeActivity"
+
     private lateinit var authManager: AuthenticationManager
     // Main menu contents
     val menuImageId = intArrayOf(R.drawable.plants, R.drawable.watering, R.drawable.fertilizing)
@@ -117,6 +119,7 @@ class HomeActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 val res = sendImageToAPI(encodeImageBase64(photoFile)).await()
                 responseIdentify.add(res)
+                Log.d(logTag, "Plant probability: ${res.is_plant_probability}")
                 if (res.is_plant && res.is_plant_probability >= PLANT_PROBABILITY_ACCEPTED) {
                     for (i in res.suggestions.indices) {
                         val singleSuggestion: Suggestion = res.suggestions.get(index = i)

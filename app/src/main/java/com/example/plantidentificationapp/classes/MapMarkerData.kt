@@ -1,11 +1,13 @@
 package com.example.plantidentificationapp.classes
 
 import android.location.Location
-import java.net.URL
 
 data class MapMarkerData(
-    val location: Location,
-    val title: String,
-    val description: String,
-    val imageURL: URL
-)
+    val location: FirebaseLocation? = null,
+    val title: String? = null,
+    val description: String? = null,
+    val imageURL: String? = null
+) {
+    // Add a no-argument constructor
+    constructor() : this(null, null, null, null)
+}

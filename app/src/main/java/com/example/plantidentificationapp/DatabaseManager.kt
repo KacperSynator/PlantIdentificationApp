@@ -3,6 +3,7 @@ package com.example.plantidentificationapp
 import android.location.Location
 import android.net.Uri
 import android.util.Log
+import com.example.plantidentificationapp.classes.FirebaseLocation
 import com.example.plantidentificationapp.classes.MapMarkerData
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
@@ -48,7 +49,7 @@ class DatabaseManager {
         uploadPlantImage(image, plantId!!) { url ->
             if (url != null) {
                 Log.i(logTag, "Image uploaded url: $url")
-                val plantData = MapMarkerData(location, title, description, url)
+                val plantData = MapMarkerData(FirebaseLocation(location), title, description, url)
                 userIdentifiedPlants.child(plantId).setValue(plantData)
             } else {
                 Log.e(logTag, "Failed to upload image plantId: $plantId")
@@ -99,7 +100,7 @@ class DatabaseManager {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.e(logTag, "Error retrieving users: ${error.message}")
+                Log.e(logTag, "Error retrieving all users plants: ${error.message}")
                 callback(emptyList())
             }
         }
@@ -107,7 +108,7 @@ class DatabaseManager {
         usersRef.addValueEventListener(usersListener)
     }
 
-    private fun uploadPlantImage(imageFile: File, imageId: String, callback: (URL?) -> Unit) {
+    private fun uploadPlantImage(imageFile: File, imageId: String, callback: (String?) -> Unit) {
         val storageRef = storage.getReference(PLANT_IMAGES)
         val imageRef = storageRef.child("$imageId.jpg")
 
@@ -118,6 +119,7 @@ class DatabaseManager {
                 task.exception?.let {
                     Log.e(logTag, "Exception when uploading image: ${it.message}")
                     callback(null)
+                    return@continueWithTask null
                 }
             }
 
@@ -126,10 +128,11 @@ class DatabaseManager {
         }.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val imageUrl = task.result.toString()
+                Log.d(logTag, "Image url: $imageUrl")
 
-                callback(URL(imageUrl))
+                callback(imageUrl)
             } else {
-                Log.e(logTag, "Task failed to upload image")
+                Log.e(logTag, "Task failed to upload image or get downloadUrl")
                 callback(null)
             }
         }

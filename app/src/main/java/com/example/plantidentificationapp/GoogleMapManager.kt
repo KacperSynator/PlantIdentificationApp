@@ -39,7 +39,7 @@ class GoogleMapManager(private val context: Context) : OnMapReadyCallback {
     }
 
     private fun addMarker(markerData: MapMarkerData) {
-        val latLng = LatLng(markerData.location.latitude, markerData.location.longitude)
+        val latLng = LatLng(markerData.location!!.latitude, markerData.location.longitude)
 
         val google = googleMap.addMarker(
             MarkerOptions().position(latLng).title(markerData.title)

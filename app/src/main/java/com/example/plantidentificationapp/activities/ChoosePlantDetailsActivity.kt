@@ -153,8 +153,8 @@ class ChoosePlantDetailsActivity : AppCompatActivity() {
                     databaseManager.addPlant(
                         authManager.currentUser()!!,
                         location,
-                        commonName.toString(),
-                        description.toString(),
+                        commonName.text.toString(),
+                        description.text.toString(),
                         File(intent.getStringExtra("image_path")!!)
                     )
                 }
