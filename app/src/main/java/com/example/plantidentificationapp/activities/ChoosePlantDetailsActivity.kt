@@ -1,5 +1,7 @@
 package com.example.plantidentificationapp.activities
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -180,6 +182,11 @@ class ChoosePlantDetailsActivity : AppCompatActivity() {
                         if (isSuccess) {
                             savedInfoToast.show()
                             isPlantSaved = true
+                            identifiedPlantArrayList.clear()
+                            var intent = Intent(applicationContext, MyPlantsActivity::class.java)
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                            startActivity(intent)
+                            finish()
                         } else {
                             dbToastError.show()
                         }

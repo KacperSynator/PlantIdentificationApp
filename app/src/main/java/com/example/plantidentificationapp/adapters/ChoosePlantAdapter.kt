@@ -1,6 +1,7 @@
 package com.example.plantidentificationapp.adapters
 
 import android.app.Activity
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.example.plantidentificationapp.*
+import com.example.plantidentificationapp.activities.MyPlantsActivity
 import com.example.plantidentificationapp.classes.IdentifiedPlant
 import com.squareup.picasso.Picasso
 import java.io.File
@@ -99,23 +101,21 @@ class ChoosePlantAdapter(
                         authManager.currentUser()!!,
                         location,
                         identifiedPlantArrayList[position]?.plant_name.toString(),
-                        identifiedPlantArrayList[position]?.plant_details?.wiki_description.toString(),
+                        identifiedPlantArrayList[position]?.plant_details?.wiki_description?.value.toString(),
                         File(context.intent.getStringExtra("image_path")!!)
                     ) { isSuccess ->
                         if (isSuccess) {
                             savedInfoToast.show()
                             isPlantSaved = true
+                            identifiedPlantArrayList.clear()
+                            var intent = Intent(context, MyPlantsActivity::class.java)
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                            context.startActivity(intent)
+                            (context as Activity).finish()
                         } else {
                             dbToastError.show()
                         }
                     }
-                    saveInfoToast.show()
-
-//                    identifiedPlantArrayList.clear()
-//                    var intent = Intent(context, MyPlantsActivity::class.java)
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-//                    context.startActivity(intent)
-//                    (context as Activity).finish()
                 }
             } catch (e: Exception) {
                 errorToastInfo.show()
