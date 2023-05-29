@@ -83,7 +83,7 @@ class HomeActivity : AppCompatActivity() {
         binding.listViewMain.adapter = MenuAdapter(this, menuItemArrayList)
         binding.listViewMain.setOnItemClickListener{_, _, position, _ ->
             when(position) {
-//                0 -> loadMapActivity()
+                0 -> loadMyPlantsActivity()
                 1 -> loadMapActivity(MapType.CURRENT_USER)
                 2 -> loadMapActivity(MapType.ALL_USERS)
             }
@@ -177,6 +177,11 @@ class HomeActivity : AppCompatActivity() {
     private fun loadMapActivity(mapType: MapType) {
         val intent = Intent(this, MapActivity::class.java)
         intent.putExtra("mapType", mapType)
+        startActivity(intent)
+    }
+
+    private fun loadMyPlantsActivity () {
+        val intent = Intent(this, MyPlantsActivity::class.java)
         startActivity(intent)
     }
 

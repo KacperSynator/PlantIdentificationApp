@@ -44,5 +44,7 @@
         <activity android:name=".activities.ChoosePlantActivity"/>
         <activity android:name=".activities.ChoosePlantDetailsActivity"/>
         <activity android:name=".activities.ActivityNoResults"/>
+        <activity android:name=".activities.MyPlantsActivity"/>
+        <activity android:name=".activities.PlantDetailsActivity"/>
     </application>
 </manifest>
