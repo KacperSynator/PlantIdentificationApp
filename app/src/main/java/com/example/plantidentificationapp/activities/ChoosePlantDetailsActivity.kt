@@ -28,45 +28,56 @@ class ChoosePlantDetailsActivity : AppCompatActivity() {
     private val geoManager: GeoLocalizationManager = GeoLocalizationManager(this)
     private val authManager: AuthenticationManager = AuthenticationManager(this)
 
+    private var isPlantSaved = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityChooseplantdetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        val dbHelper = DataBaseHelper(applicationContext)
-//        val db = dbHelper.writableDatabase
-        val saveInfoToast = Toast.makeText(applicationContext, "Plant saved", Toast.LENGTH_SHORT)
-        val saveInfoToast2 = Toast.makeText(applicationContext, "Saving plant...", Toast.LENGTH_SHORT)
-        val errorToastInfo = Toast.makeText(applicationContext, "Null exception while saving", Toast.LENGTH_SHORT)
+        val savedInfoToast = Toast.makeText(applicationContext, "Plant saved", Toast.LENGTH_SHORT)
+        val alreadySavedErrorToast =
+            Toast.makeText(applicationContext, "Plant is already saved", Toast.LENGTH_SHORT)
+        val savingInfoToast =
+            Toast.makeText(applicationContext, "Saving plant...", Toast.LENGTH_SHORT)
+        val locationToastError =
+            Toast.makeText(applicationContext, "Failed to get current location", Toast.LENGTH_SHORT)
+        val dbToastError =
+            Toast.makeText(
+                applicationContext,
+                "Failed to save plant in database",
+                Toast.LENGTH_SHORT
+            )
 
-        val picture : ImageView = binding.chooseplantdetailsPicture
-        val commonName : TextView = binding.chooseplantdetailsCommonName
-        val scientificName : TextView = binding.chooseplantdetailsScientificname
-        val probability : TextView = binding.chooseplantdetailsProbability
-        val descriptionCardView : CardView = binding.chooseplantdetailsDescriptionCardview
-        val description : TextView = binding.chooseplantdetailsDescription
-        val citation : TextView = binding.chooseplantdetailsCitation
-        val licenseName : TextView = binding.chooseplantdetailsLicenseName
-        val synonymsCardView : CardView = binding.chooseplantdetailsSynonymsCardview
-        val synonyms : TextView = binding.chooseplantdetailsSynonyms
-        val propagationMethodsCardView : CardView = binding.chooseplantdetailsPropagationmethodsCardview
-        val propagationMethods : TextView = binding.chooseplantdetailsPropagationmethods
-        val ediblePartsCardView : CardView = binding.chooseplantdetailsEdiblepartsCardview
-        val edibleParts : TextView = binding.chooseplantdetailsEdibleparts
-        val structuredNameCardView : CardView = binding.chooseplantdetailsStructurednameCardview
-        val genus : TextView = binding.chooseplantdetailsStructurednameGenus
-        val species : TextView = binding.chooseplantdetailsStructurednameSpecies
-        val taxonomyCardView : CardView = binding.chooseplantdetailsTaxonomyCardview
-        val taxonomyClass : TextView = binding.chooseplantdetailsTaxonomyClass
-        val taxonomyFamily : TextView = binding.chooseplantdetailsTaxonomyFamily
-        val taxonomyGenus : TextView = binding.chooseplantdetailsTaxonomyGenus
-        val taxonomyKingdom : TextView = binding.chooseplantdetailsTaxonomyKingdom
-        val taxonomyPhylum : TextView = binding.chooseplantdetailsTaxonomyPhylum
-        val button : Button = binding.chooseplantdetailsAddplantButton
-        val pictureLicense : TextView = binding.chooseplantdetailsPictureLicense
+        val picture: ImageView = binding.chooseplantdetailsPicture
+        val commonName: TextView = binding.chooseplantdetailsCommonName
+        val scientificName: TextView = binding.chooseplantdetailsScientificname
+        val probability: TextView = binding.chooseplantdetailsProbability
+        val descriptionCardView: CardView = binding.chooseplantdetailsDescriptionCardview
+        val description: TextView = binding.chooseplantdetailsDescription
+        val citation: TextView = binding.chooseplantdetailsCitation
+        val licenseName: TextView = binding.chooseplantdetailsLicenseName
+        val synonymsCardView: CardView = binding.chooseplantdetailsSynonymsCardview
+        val synonyms: TextView = binding.chooseplantdetailsSynonyms
+        val propagationMethodsCardView: CardView =
+            binding.chooseplantdetailsPropagationmethodsCardview
+        val propagationMethods: TextView = binding.chooseplantdetailsPropagationmethods
+        val ediblePartsCardView: CardView = binding.chooseplantdetailsEdiblepartsCardview
+        val edibleParts: TextView = binding.chooseplantdetailsEdibleparts
+        val structuredNameCardView: CardView = binding.chooseplantdetailsStructurednameCardview
+        val genus: TextView = binding.chooseplantdetailsStructurednameGenus
+        val species: TextView = binding.chooseplantdetailsStructurednameSpecies
+        val taxonomyCardView: CardView = binding.chooseplantdetailsTaxonomyCardview
+        val taxonomyClass: TextView = binding.chooseplantdetailsTaxonomyClass
+        val taxonomyFamily: TextView = binding.chooseplantdetailsTaxonomyFamily
+        val taxonomyGenus: TextView = binding.chooseplantdetailsTaxonomyGenus
+        val taxonomyKingdom: TextView = binding.chooseplantdetailsTaxonomyKingdom
+        val taxonomyPhylum: TextView = binding.chooseplantdetailsTaxonomyPhylum
+        val button: Button = binding.chooseplantdetailsAddplantButton
+        val pictureLicense: TextView = binding.chooseplantdetailsPictureLicense
 
         if (chosenPlant != null) {
-            val plantDetails : PlantDetails? = chosenPlant?.plant_details
+            val plantDetails: PlantDetails? = chosenPlant?.plant_details
 
             // Picture
             if (plantDetails?.wiki_image?.value != null) {
@@ -79,7 +90,8 @@ class ChoosePlantDetailsActivity : AppCompatActivity() {
             // Picture license
             if (plantDetails?.wiki_image?.citation != null || plantDetails?.wiki_image?.license_name != null || plantDetails?.wiki_image?.license_url != null) {
                 pictureLicense.visibility = View.VISIBLE
-                val licenseConcatenated = plantDetails?.wiki_image?.license_name + ", " +  plantDetails?.wiki_image?.citation + ", " + plantDetails?.wiki_image?.license_url
+                val licenseConcatenated =
+                    plantDetails?.wiki_image?.license_name + ", " + plantDetails?.wiki_image?.citation + ", " + plantDetails?.wiki_image?.license_url
                 pictureLicense.text = licenseConcatenated
             } else {
                 pictureLicense.visibility = View.GONE
@@ -141,12 +153,22 @@ class ChoosePlantDetailsActivity : AppCompatActivity() {
                 taxonomyCardView.visibility = View.GONE
             }
             // Adding plant to database
+
             button.setOnClickListener {
+                if (isPlantSaved) {
+                    Log.e(logTag, "Plant is already saved")
+                    alreadySavedErrorToast.show()
+                    return@setOnClickListener
+                }
+
                 geoManager.getLocation { location ->
                     if (location == null) {
                         Log.e(logTag, "Location is null user: ${authManager.currentUser()!!.uid}")
+                        locationToastError.show()
                         return@getLocation
                     }
+
+                    savingInfoToast.show()
 
                     databaseManager.addPlant(
                         authManager.currentUser()!!,
@@ -154,7 +176,14 @@ class ChoosePlantDetailsActivity : AppCompatActivity() {
                         commonName.text.toString(),
                         description.text.toString(),
                         File(intent.getStringExtra("image_path")!!)
-                    )
+                    ) { isSuccess ->
+                        if (isSuccess) {
+                            savedInfoToast.show()
+                            isPlantSaved = true
+                        } else {
+                            dbToastError.show()
+                        }
+                    }
                 }
             }
         }

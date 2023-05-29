@@ -1,7 +1,5 @@
 package com.example.plantidentificationapp.classes
 
-import android.location.Location
-
 data class MapMarkerData(
     val location: FirebaseLocation? = null,
     val title: String? = null,
