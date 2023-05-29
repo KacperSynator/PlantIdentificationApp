@@ -30,8 +30,9 @@ class GoogleMapManager(private val context: Context) : OnMapReadyCallback {
                     return@getLocation
                 }
 
+                val zoomLevel = 15f;
                 val currentLocation = LatLng(location.latitude, location.longitude)
-                googleMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation))
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, zoomLevel))
 
                 loadAllMapMarkers()
             }
