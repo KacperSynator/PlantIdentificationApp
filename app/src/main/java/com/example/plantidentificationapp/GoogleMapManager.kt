@@ -1,9 +1,11 @@
 package com.example.plantidentificationapp
 
+import android.app.Activity
 import android.content.Context
 import android.util.Log
 import com.example.plantidentificationapp.adapters.MapMarkerInfoWindowAdapter
 import com.example.plantidentificationapp.classes.MapMarkerData
+import com.example.plantidentificationapp.classes.MapType
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -17,7 +19,6 @@ class GoogleMapManager(private val context: Context) : OnMapReadyCallback {
 
     private var geoManager: GeoLocalizationManager = GeoLocalizationManager(context)
     private var databaseManager: DatabaseManager = DatabaseManager()
-
 
     override fun onMapReady(map: GoogleMap) {
         map.let {
@@ -34,7 +35,16 @@ class GoogleMapManager(private val context: Context) : OnMapReadyCallback {
                 val currentLocation = LatLng(location.latitude, location.longitude)
                 googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, zoomLevel))
 
-                loadAllMapMarkers()
+                val activity = context as? Activity
+                val intent = activity?.intent
+                val mapType = intent?.getSerializableExtra("mapType") as? MapType
+
+                Log.d(logTag, "Received mapType: $mapType")
+
+                when (mapType!!) {
+                    MapType.ALL_USERS -> {loadAllMapMarkers()}
+                    MapType.CURRENT_USER -> {loadCurrentUserMarkers()}
+                }
             }
         }
     }
@@ -52,6 +62,15 @@ class GoogleMapManager(private val context: Context) : OnMapReadyCallback {
 
     private fun loadAllMapMarkers() {
         databaseManager.getAllPlants { markers ->
+            for (marker in markers) {
+                addMarker(marker)
+            }
+        }
+    }
+
+    private fun loadCurrentUserMarkers() {
+        val authManager = AuthenticationManager(context)
+        databaseManager.getPlantsForUser(authManager.currentUser()!!) { markers ->
             for (marker in markers) {
                 addMarker(marker)
             }

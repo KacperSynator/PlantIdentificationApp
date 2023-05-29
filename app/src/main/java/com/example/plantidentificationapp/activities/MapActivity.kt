@@ -11,7 +11,6 @@ import com.example.plantidentificationapp.GoogleMapManager
 import com.example.plantidentificationapp.R
 import com.google.android.gms.maps.MapView
 
-import kotlinx.android.synthetic.main.map_screen.*
 
 class MapActivity : AppCompatActivity() {
     private val logTag = "MapActivity"

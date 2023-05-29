@@ -20,6 +20,7 @@ import com.example.plantidentificationapp.api.model.ResponseIdentify
 import com.example.plantidentificationapp.api.model.Suggestion
 import com.example.plantidentificationapp.api.request.IdentifyRequest
 import com.example.plantidentificationapp.classes.IdentifiedPlant
+import com.example.plantidentificationapp.classes.MapType
 import com.example.plantidentificationapp.classes.MenuItem
 import com.example.plantidentificationapp.databinding.HomeScreenBinding
 import com.example.plantidentificationapp.utils.encodeImageBase64
@@ -48,7 +49,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var authManager: AuthenticationManager
     // Main menu contents
     val menuImageId = intArrayOf(R.drawable.plants, R.drawable.watering, R.drawable.fertilizing)
-    val menuItemName = listOf("My plants", "Map", "Fertilizing")
+    val menuItemName = listOf("My plants", "My plants map", "All plants map")
     private lateinit var menuItemArrayList : ArrayList<MenuItem>
 
     // Binding
@@ -82,9 +83,9 @@ class HomeActivity : AppCompatActivity() {
         binding.listViewMain.adapter = MenuAdapter(this, menuItemArrayList)
         binding.listViewMain.setOnItemClickListener{_, _, position, _ ->
             when(position) {
-                0 -> loadMapActivity()
-                1 -> loadMapActivity()
-                2 -> loadMapActivity()
+//                0 -> loadMapActivity()
+                1 -> loadMapActivity(MapType.CURRENT_USER)
+                2 -> loadMapActivity(MapType.ALL_USERS)
             }
         }
 
@@ -173,8 +174,9 @@ class HomeActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun loadMapActivity() {
+    private fun loadMapActivity(mapType: MapType) {
         val intent = Intent(this, MapActivity::class.java)
+        intent.putExtra("mapType", mapType)
         startActivity(intent)
     }
 

@@ -32,15 +32,15 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_api_key" />
 
-        <activity android:name=".LoginActivity"
+        <activity android:name=".activities.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".HomeActivity" android:exported="true"/>
-        <activity android:name=".MapActivity" android:exported="true"/>
+        <activity android:name=".activities.HomeActivity" android:exported="true"/>
+        <activity android:name=".activities.MapActivity" android:exported="true"/>
         <activity android:name=".activities.ChoosePlantActivity"/>
         <activity android:name=".activities.ChoosePlantDetailsActivity"/>
         <activity android:name=".activities.ActivityNoResults"/>
