@@ -1,4 +1,4 @@
-package com.example.plantidentificationapp
+package com.example.plantidentificationapp.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,6 +6,8 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import com.example.plantidentificationapp.AuthenticationManager
+import com.example.plantidentificationapp.R
 import com.google.android.gms.common.api.ApiException
 import kotlinx.android.synthetic.main.login_screen.*
 

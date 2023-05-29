@@ -1,7 +1,6 @@
 package com.example.plantidentificationapp.adapters
 
 import android.app.Activity
-import android.content.Intent
 import android.database.sqlite.SQLiteException
 import android.view.LayoutInflater
 import android.view.View
@@ -11,9 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.example.plantidentificationapp.R
-import com.example.plantidentificationapp.HomeActivity
 import com.example.plantidentificationapp.classes.IdentifiedPlant
-//import com.example.plantidentificationapp.database.DataBaseHelper
 import com.squareup.picasso.Picasso
 
 class ChoosePlantAdapter(private val context : Activity, private val identifiedPlantArrayList : ArrayList<IdentifiedPlant>) : ArrayAdapter<IdentifiedPlant>(context,

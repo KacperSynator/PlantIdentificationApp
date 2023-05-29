@@ -8,9 +8,6 @@ import com.example.plantidentificationapp.R
 import com.example.plantidentificationapp.adapters.ChoosePlantAdapter
 import com.example.plantidentificationapp.classes.IdentifiedPlant
 import com.example.plantidentificationapp.databinding.ActivityChooseplantBinding
-import com.example.plantidentificationapp.identifiedPlantArrayList
-import com.example.plantidentificationapp.photoFile
-import com.example.plantidentificationapp.responseIdentify
 
 // UWAGA ZMIENNA GLOBALNA
 var chosenPlant: IdentifiedPlant? = null

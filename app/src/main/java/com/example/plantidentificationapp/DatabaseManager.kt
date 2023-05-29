@@ -12,7 +12,6 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import java.io.File
-import java.net.URL
 
 
 class DatabaseManager {
@@ -41,7 +40,8 @@ class DatabaseManager {
         location: Location,
         title: String,
         description: String,
-        image: File
+        image: File,
+        callback: (Boolean) -> Unit
     ) {
         val userIdentifiedPlants = database.child(USERS).child(user.uid).child(IDENTIFIED_PLANTS)
         val plantId = userIdentifiedPlants.push().key
@@ -51,8 +51,10 @@ class DatabaseManager {
                 Log.i(logTag, "Image uploaded url: $url")
                 val plantData = MapMarkerData(FirebaseLocation(location), title, description, url)
                 userIdentifiedPlants.child(plantId).setValue(plantData)
+                callback(true)
             } else {
                 Log.e(logTag, "Failed to upload image plantId: $plantId")
+                callback(false)
             }
         }
     }

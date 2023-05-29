@@ -1,4 +1,4 @@
-package com.example.plantidentificationapp
+package com.example.plantidentificationapp.activities
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -7,15 +7,11 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
+import com.example.plantidentificationapp.GoogleMapManager
+import com.example.plantidentificationapp.R
 import com.google.android.gms.maps.MapView
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 
 import kotlinx.android.synthetic.main.map_screen.*
-import kotlin.math.log
 
 class MapActivity : AppCompatActivity() {
     private val logTag = "MapActivity"
@@ -41,7 +37,8 @@ class MapActivity : AppCompatActivity() {
             Log.i(logTag, "Asking for Internet permission")
             ActivityCompat.requestPermissions(this,
                 arrayOf(Manifest.permission.INTERNET),
-                MY_PERMISSIONS_INTERNET)
+                MY_PERMISSIONS_INTERNET
+            )
         }
     }
 

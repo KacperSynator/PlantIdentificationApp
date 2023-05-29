@@ -15,8 +15,6 @@ import com.example.plantidentificationapp.GeoLocalizationManager
 import com.example.plantidentificationapp.R
 import com.example.plantidentificationapp.api.model.PlantDetails
 import com.example.plantidentificationapp.databinding.ActivityChooseplantdetailsBinding
-//import com.example.plantidentificationapp.database.DataBaseHelper
-//import com.example.plantidentificationapp.databinding.ActivityChooseplantdetailsBinding
 import com.example.plantidentificationapp.utils.nullableListStringIntoString
 import com.squareup.picasso.Picasso
 import java.io.File

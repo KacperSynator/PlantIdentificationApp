@@ -1,4 +1,4 @@
-package com.example.plantidentificationapp
+package com.example.plantidentificationapp.activities
 
 import android.app.Activity
 import android.content.Intent
@@ -11,6 +11,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
+import com.example.plantidentificationapp.AuthenticationManager
+import com.example.plantidentificationapp.R
 import com.example.plantidentificationapp.adapters.MenuAdapter
 import com.example.plantidentificationapp.api.PlantAPI
 import com.example.plantidentificationapp.api.createPlantAPIClient
@@ -21,7 +23,6 @@ import com.example.plantidentificationapp.classes.IdentifiedPlant
 import com.example.plantidentificationapp.classes.MenuItem
 import com.example.plantidentificationapp.databinding.HomeScreenBinding
 import com.example.plantidentificationapp.utils.encodeImageBase64
-import com.example.plantidentificationapp.activities.ChoosePlantActivity
 
 import kotlinx.android.synthetic.main.home_screen.*
 import kotlinx.coroutines.async
