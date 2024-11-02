@@ -24,8 +24,7 @@ fun downscaleBitmap(image : Bitmap, maxLength : Int) : Bitmap {
 
             val aspectRatio = image.width.toDouble() / image.height.toDouble()
             val targetWidth = (maxLength * aspectRatio).toInt()
-            val image = Bitmap.createScaledBitmap(image, targetWidth, maxLength, false)
-            return image
+            return Bitmap.createScaledBitmap(image, targetWidth, maxLength, false)
         } else {
             if (image.width <= maxLength) {  // If image is alredy good enough size
                 return image
@@ -33,8 +32,7 @@ fun downscaleBitmap(image : Bitmap, maxLength : Int) : Bitmap {
 
             val aspectRatio = image.height.toDouble() / image.width.toDouble()
             val targetHeight = (maxLength * aspectRatio).toInt()
-            val image = Bitmap.createScaledBitmap(image, maxLength, targetHeight, false)
-            return image
+            return Bitmap.createScaledBitmap(image, maxLength, targetHeight, false)
         }
     } catch (e: Exception) {
         return image

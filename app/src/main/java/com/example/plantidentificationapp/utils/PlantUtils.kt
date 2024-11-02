@@ -27,7 +27,7 @@ fun returnPlantDaysWatering (identifiedPlant: IdentifiedPlant) : Int {
 fun nullableListStringIntoString (list : List<String>?) : String {
     var text = ""
     if (list != null) {
-        list?.let {
+        list.let {
             for (i in it.indices) {
                 if (i == 0) {
                     text += it.get(index = i)

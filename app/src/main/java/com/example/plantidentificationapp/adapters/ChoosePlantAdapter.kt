@@ -100,8 +100,8 @@ class ChoosePlantAdapter(
                     databaseManager.addPlant(
                         authManager.currentUser()!!,
                         location,
-                        identifiedPlantArrayList[position]?.plant_name.toString(),
-                        identifiedPlantArrayList[position]?.plant_details?.wiki_description?.value.toString(),
+                        identifiedPlantArrayList[position].plant_name.toString(),
+                        identifiedPlantArrayList[position].plant_details?.wiki_description?.value.toString(),
                         File(context.intent.getStringExtra("image_path")!!)
                     ) { isSuccess ->
                         if (isSuccess) {
@@ -111,7 +111,7 @@ class ChoosePlantAdapter(
                             var intent = Intent(context, MyPlantsActivity::class.java)
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                             context.startActivity(intent)
-                            (context as Activity).finish()
+                            (context).finish()
                         } else {
                             dbToastError.show()
                         }
