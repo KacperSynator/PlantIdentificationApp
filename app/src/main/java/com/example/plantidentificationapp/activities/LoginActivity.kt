@@ -60,10 +60,16 @@ class LoginActivity : AppCompatActivity() {
 
     private fun getEmailAndPassword(): GetEmailAndPasswordResult {
         val email = login_edit_email.text.toString()
-        val password = login_edit_haslo.text.toString()
+        val password = login_edit_password.text.toString()
+        val repeat_password = login_edit_repeat_password.text.toString()
 
         if (email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Please enter email and password", Toast.LENGTH_SHORT).show()
+            return GetEmailAndPasswordResult(false, email, password)
+        }
+
+        if (password != repeat_password) {
+            Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
             return GetEmailAndPasswordResult(false, email, password)
         }
 
@@ -119,6 +125,24 @@ class LoginActivity : AppCompatActivity() {
             authManager.createAccountWithEmailAndPassword(
                 result.email, result.password, responseCallback
             )
+        }
+
+        switch_between_login_and_sign_up.setOnClickListener {
+            if (login_edit_repeat_password.visibility == android.view.View.VISIBLE) {
+                switch_between_login_and_sign_up.text = "Sign Up"
+                sign_up_prompt.text = "Already have an account?"
+                login_text_repeat_password.visibility = android.view.View.GONE
+                login_edit_repeat_password.visibility = android.view.View.GONE
+                sign_up_button.visibility = android.view.View.GONE
+                logging_button.visibility = android.view.View.VISIBLE
+            } else {
+                switch_between_login_and_sign_up.text = "Log In"
+                sign_up_prompt.text = "Don't have an account?"
+                login_edit_repeat_password.visibility = android.view.View.VISIBLE
+                login_text_repeat_password.visibility = android.view.View.VISIBLE
+                sign_up_button.visibility = android.view.View.VISIBLE
+                logging_button.visibility = android.view.View.GONE
+            }
         }
 
         google_sign_in_button.setOnClickListener {

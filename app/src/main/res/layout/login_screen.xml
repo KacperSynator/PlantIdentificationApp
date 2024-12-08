@@ -27,23 +27,44 @@
             android:layout_marginRight="30dp"
             android:minHeight="48dp"/>
         <TextView
-            android:id="@+id/login_text_haslo"
+            android:id="@+id/login_text_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hasło"
+            android:text="Password"
             android:textSize="15sp"
             android:paddingTop="10dp"
             android:paddingLeft="35dp"
             android:paddingBottom="10dp"/>
         <EditText
-            android:id="@+id/login_edit_haslo"
-            android:hint="Haslo"
+            android:id="@+id/login_edit_password"
+            android:hint="Password"
             android:inputType="textPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
             android:minHeight="48dp"/>
+        <TextView
+            android:id="@+id/login_text_repeat_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Repeat Password"
+            android:textSize="15sp"
+            android:paddingTop="10dp"
+            android:paddingLeft="35dp"
+            android:paddingBottom="10dp"
+            android:visibility="gone"/>
+        <EditText
+            android:id="@+id/login_edit_repeat_password"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:minHeight="48dp"
+            android:visibility="gone"/>
+
 
         <android.widget.LinearLayout
             android:layout_width="match_parent"
@@ -62,7 +83,8 @@
                 android:shadowColor="#454545"
                 android:shadowDx="0"
                 android:shadowDy="0"
-                android:shadowRadius="5"/>
+                android:shadowRadius="5"
+                android:visibility="visible"/>
             <android.widget.Button
                 android:id="@+id/sign_up_button"
                 android:text="Sign up"
@@ -75,7 +97,8 @@
                 android:shadowColor="#454545"
                 android:shadowDx="0"
                 android:shadowDy="0"
-                android:shadowRadius="5"/>
+                android:shadowRadius="5"
+                android:visibility="gone"/>
         </android.widget.LinearLayout>
 
         <android.widget.LinearLayout
@@ -83,6 +106,43 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="30dp"
             android:orientation="horizontal">
+            <android.widget.TextView
+                android:id="@+id/sign_up_prompt"
+                android:text="Don't have an account?"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="10dp"
+                android:textColor="#000000"/>
+            <android.widget.Button
+                android:id="@+id/switch_between_login_and_sign_up"
+                android:text="Sign up"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/toggle_button"
+                android:textColor="#FFFFFF"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+                android:shadowColor="#454545"
+                android:shadowDx="0"
+                android:shadowDy="0"
+                android:shadowRadius="5"
+                android:visibility="visible"/>
+        </android.widget.LinearLayout>
+
+        <android.widget.LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/google_sign_in_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Or use Google account"
+                android:textSize="15sp"
+                android:paddingTop="30dp"
+                android:paddingBottom="10dp"/>
             <com.google.android.gms.common.SignInButton
                 android:id="@+id/google_sign_in_button"
                 android:layout_width="wrap_content"
