@@ -8,6 +8,7 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
+import android.app.ProgressDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
@@ -38,6 +39,8 @@ private const val  FILE_NAME =  "photo.jpg"
 private lateinit var takePictureIntent: Intent
 private lateinit var fileProvider: Uri
 private const val REQUEST_CODE = 200
+
+private lateinit var progressDialog: ProgressDialog
 
 // GLOBAL VARIABLE RESULT OF API
 var identifiedPlantArrayList : ArrayList<IdentifiedPlant> = ArrayList()
@@ -71,6 +74,11 @@ class HomeActivity : AppCompatActivity() {
         authManager = AuthenticationManager(this)
 
         setupSignOutButton()
+
+        progressDialog = ProgressDialog(this).apply {
+            setMessage("Identifying...")
+            setCancelable(false)
+        }
     }
 
     private fun setupMainMenuContents() {
@@ -119,7 +127,9 @@ class HomeActivity : AppCompatActivity() {
             Toast.makeText(this@HomeActivity, "Processing identification...", Toast.LENGTH_SHORT).show()
             // Sending image to API, assigning results to global ArrayList of identified plants and starting ChoosePlantActivity
             lifecycleScope.launch {
+                progressDialog.show()
                 val res = sendImageToAPI(encodeImageBase64(photoFile)).await()
+                progressDialog.dismiss()
                 responseIdentify.add(res)
                 Log.d(logTag, "Plant probability: ${res.is_plant_probability}")
                 if (res.is_plant && res.is_plant_probability >= PLANT_PROBABILITY_ACCEPTED) {
