@@ -52,12 +52,12 @@ class GoogleMapManager(private val context: Context) : OnMapReadyCallback {
     private fun addMarker(markerData: MapMarkerData) {
         val latLng = LatLng(markerData.location!!.latitude, markerData.location.longitude)
 
-        val google = googleMap.addMarker(
+        val marker = googleMap.addMarker(
             MarkerOptions().position(latLng).title(markerData.title)
                 .snippet(markerData.description)
         )
 
-        google?.tag = markerData.imageURL.toString()
+        marker?.tag = markerData.imageURL.toString()
     }
 
     private fun loadAllMapMarkers() {
