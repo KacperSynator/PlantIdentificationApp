@@ -85,7 +85,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun loadLoginScreen() {
-        setContentView(R.layout.login_screen)
+        setContentView(R.layout.login_screen_b)
 
         logging_button.setOnClickListener {
             val result = getEmailAndPassword()
@@ -130,16 +130,14 @@ class LoginActivity : AppCompatActivity() {
         switch_between_login_and_sign_up.setOnClickListener {
             if (login_edit_repeat_password.visibility == android.view.View.VISIBLE) {
                 switch_between_login_and_sign_up.text = "Sign Up"
-                sign_up_prompt.text = "Already have an account?"
-                login_text_repeat_password.visibility = android.view.View.GONE
+                sign_up_prompt.text = "Don't have an account?"
                 login_edit_repeat_password.visibility = android.view.View.GONE
                 sign_up_button.visibility = android.view.View.GONE
                 logging_button.visibility = android.view.View.VISIBLE
             } else {
                 switch_between_login_and_sign_up.text = "Log In"
-                sign_up_prompt.text = "Don't have an account?"
+                sign_up_prompt.text = "Already have an account?"
                 login_edit_repeat_password.visibility = android.view.View.VISIBLE
-                login_text_repeat_password.visibility = android.view.View.VISIBLE
                 sign_up_button.visibility = android.view.View.VISIBLE
                 logging_button.visibility = android.view.View.GONE
             }
