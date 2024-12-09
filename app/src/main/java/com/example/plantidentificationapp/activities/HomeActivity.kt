@@ -1,5 +1,6 @@
 package com.example.plantidentificationapp.activities
 
+import TutorialDialogFragment
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
@@ -9,6 +10,7 @@ import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
 import android.app.ProgressDialog
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
@@ -74,6 +76,15 @@ class HomeActivity : AppCompatActivity() {
         authManager = AuthenticationManager(this)
 
         setupSignOutButton()
+        setupTutorialButton()
+
+        val sharedPreferences = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        val isTutorialShown = sharedPreferences.getBoolean("is_tutorial_shown", false)
+
+        if (!isTutorialShown) {
+            TutorialDialogFragment().show(supportFragmentManager, "TutorialDialog")
+            sharedPreferences.edit().putBoolean("is_tutorial_shown", true).apply()
+        }
 
         progressDialog = ProgressDialog(this).apply {
             setMessage("Identifying...")
@@ -176,6 +187,13 @@ class HomeActivity : AppCompatActivity() {
             }
 
             authManager.signOut(responseCallback)
+        }
+    }
+
+    private fun setupTutorialButton() {
+        home_screen_tutorial_button.setOnClickListener {
+            val tutorialDialog = TutorialDialogFragment()
+            tutorialDialog.show(supportFragmentManager, "TutorialDialog")
         }
     }
 
